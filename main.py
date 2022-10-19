@@ -42,15 +42,15 @@ def buttons():
 
     appo_l = ttk.Label(frame, text = 'Click here to fix an appointment.', font = 'bold')
     appo_l.place(x = 100, y = 220)
-    appo_b = ttk.Button(frame, text = 'Appointment').place(x = 400, y = 220)
+    appo_b = ttk.Button(frame, text = 'Appointment', command = appointment).place(x = 400, y = 220)
 
     modify_l = ttk.Label(frame, text = 'Click here to modify a existing data.', font = 'bold')
     modify_l.place(x = 100, y = 260)
-    modify_b = ttk.Button(frame, text = 'Modify').place(x = 400, y = 260)
+    modify_b = ttk.Button(frame, text = 'Modify', command = modify).place(x = 400, y = 260)
 
     view_l = ttk.Label(frame, text = 'Click here to view all data.', font = 'bold')
     view_l.place(x = 100, y = 300)
-    view_b = ttk.Button(frame, text = 'View').place(x = 400, y = 300)
+    view_b = ttk.Button(frame, text = 'View', command = view).place(x = 400, y = 300)
 
     close_b = ttk.Button(frame, text = 'Close', command = root.destroy).place(x = 500, y = 400)
 
@@ -88,7 +88,7 @@ def services():
     tree.heading('service', text = 'Service')
     tree.heading('room_no', text = 'Room No')
 
-    service = []
+    service = query.service
 
     for service in service:
         tree.insert('', END, values = service)
@@ -96,9 +96,17 @@ def services():
     tree.grid(row = 0, column = 0, sticky = 'nsew')
 
 def register():
+    def confirm():
+        data = [int(adhar_var.get()), name_var.get(), sex_var.get(), int(contact_var.get()), address_var.get()]
+        insert_query = query.insert_patient
+
+        # cursor.execute(insert_query, data)
+        # connection.commit()
+        reg_level.destroy()
+
     reg_level = Toplevel()
     reg_level.resizable(False, False)
-    reg_level.geometry('300x200')
+    reg_level.geometry('400x300')
     reg_level.title('Registration')
     reg_frame = ttk.Frame(reg_level)
     reg_frame.pack()
@@ -109,20 +117,98 @@ def register():
     contact_var = StringVar()
     address_var = StringVar()
 
-    l_adhar = ttk.Label(reg_frame, text = 'Adhar No').place(x = 40, y = 20)
-    e_adhar = ttk.Entry(reg_frame, textvariable = address_var).place(x = 60, y = 20)
+    l_adhar = ttk.Label(reg_frame, text = 'Adhar No').pack() # place(x = 40, y = 20)
+    e_adhar = ttk.Entry(reg_frame, textvariable = adhar_var).pack() # place(x = 60, y = 20)
 
-    l_name = ttk.Label(reg_frame, text = 'Name').place(x = 40, y = 60)
-    e_name = ttk.Entry(reg_frame, textvariable = name_var).place(x = 60, y = 60)
+    l_name = ttk.Label(reg_frame, text = 'Name').pack() # place(x = 40, y = 60)
+    e_name = ttk.Entry(reg_frame, textvariable = name_var).pack() # place(x = 60, y = 60)
 
-    l_sex = ttk.Label(reg_frame, text = 'Sex').place(x = 40, y = 100)
-    c_sex = ttk.Combobox(reg_frame)
+    l_sex = ttk.Label(reg_frame, text = 'Sex').pack() # place(x = 40, y = 100)
+    c_sex = ttk.Combobox(reg_frame, textvariable = sex_var)
+    c_sex['state'] = 'readonly'
+    c_sex['values'] = ['male', 'female']
+    c_sex.pack()
+
+    l_contact = ttk.Label(reg_frame, text = 'Contact').pack()
+    e_contact = ttk.Entry(reg_frame, textvariable = contact_var).pack()
+
+    l_address = ttk.Label(reg_frame, text = 'Address').pack()
+    e_address = ttk.Entry(reg_frame, textvariable = address_var).pack()
+
+    b_confirm = ttk.Button(reg_frame, text = 'Confirm', command = confirm).pack()
 
 def appointment():
-    pass
+    def confirm():
+        data = [int(adhar_var.get()), name_var.get(), doctor_var.get()]
+        insert_query = query.insert_app
+
+        # cursor.execute(insert_query)
+        # connection.commit()
+        app_level.destroy()
+
+    app_level = Toplevel()
+    app_level.geometry('300x200')
+    app_level.title('Appointment')
+    app_level.resizable(False, False)
+    app_frame = ttk.Frame(app_level)
+    app_frame.pack()
+
+    adhar_var = StringVar()
+    name_var = StringVar()
+    doctor_var = StringVar()
+
+    l_adhar = ttk.Label(app_frame, text = 'Adhar No').pack() # place(x = 40, y = 20)
+    e_adhar = ttk.Entry(app_frame, textvariable = adhar_var).pack() # place(x = 60, y = 20)
+
+    l_name = ttk.Label(app_frame, text = 'Name').pack() # place(x = 40, y = 60)
+    e_name = ttk.Entry(app_frame, textvariable = name_var).pack() # place(x = 60, y = 60)
+
+    l_doctor = ttk.Label(app_frame, text = 'doctor').pack() # place(x = 40, y = 100)
+    c_doctor = ttk.Combobox(app_frame, textvariable = doctor_var)
+    c_doctor['state'] = 'readonly'
+    # cursor.execute('Select name from dcotor;')
+    # doctor_name = []
+    # for tup in cusror.fetchall():
+    #     doctor.append(tup[0])
+    doctor_name = ['abc', 'adaf', 'asdf', 'asdfasdf', 'asdfadf']
+    c_doctor['values'] = doctor_name
+    c_doctor.pack()
+
+    b_confirm = ttk.Button(app_frame, text = 'Confirm', command = confirm).pack()
 
 def modify():
-    pass
+    def confirm():
+        data = [c_field.get(), e_ch_field.get(), int(adhar_var.get())]
+        mod_query = query.modify_pa
+
+        # cursor.execute(mod_query, data)
+        # connection.commit()
+        mod_level.destroy()
+
+    mod_level = Toplevel()
+    mod_level.resizable(False, False)
+    mod_level.geometry('300x200')
+    mod_level.title('Modify')
+    mod_frame = ttk.Frame(mod_level)
+    mod_frame.pack()
+
+    adhar_var = StringVar()
+    field_var = StringVar()
+    changed_var = StringVar()
+
+    l_adhar = ttk.Label(mod_frame, text = 'Adhar No').pack() # place(x = 40, y = 20)
+    e_adhar = ttk.Entry(mod_frame, textvariable = adhar_var).pack() # place(x = 60, y = 20)
+
+    l_field = ttk.Label(mod_frame, text = 'The Field you want to change.', font = 'bold').pack()
+    c_field = ttk.Combobox(mod_frame, textvariable = field_var)
+    c_field['state'] = 'readonly'
+    c_field['values'] = ['Adhar_No', 'Name', 'Sex', 'Contact', 'Address']
+    c_field.pack()
+
+    l_ch_field = ttk.Label(mod_frame, text = 'New Value').pack()
+    e_ch_field = ttk.Entry(mod_frame, textvariable = changed_var).pack()
+
+    b_confirm = ttk.Button(mod_frame, text = 'Confirm', command = confirm).pack()
 
 def view():
     pass

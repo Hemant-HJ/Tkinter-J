@@ -13,7 +13,7 @@ patient_table = """
 Create table if not exists patient (
     adhar_no Bigint Not Null Primary key,
     Name varchar(20) Not Null,
-    Sex char(1) Not Null,
+    Sex varchar(6) Not Null,
     Contact Bitint(10) Not Null,
     Address Varchar(50)
 );
@@ -24,10 +24,27 @@ Create table if not exists appointment (
     patient_name Varchar(20) Not Null,
     doctor_name varchar(20) Not Null,
     date timestamp,
-    appointment_no int 
+    appointment_no int Auto_Incriment 
 );
 """
 insert_into_doctor = """
 Insert into doctor values
 """
 queries = [drop_database, create_database, use_database, doctor_table, patient_table, appointment_table, insert_into_doctor]
+
+service = []
+
+insert_patient = """
+Insert into patient
+values (%s, %s, %s, %s, %s)
+"""
+
+insert_app = """
+Insert into appointment
+values (%s, %s, %s, sys())
+"""
+modify_pa = """
+Update patient
+set %s = %s
+where adhar_no = %s;
+"""

@@ -100,8 +100,8 @@ def register():
         data = [int(adhar_var.get()), name_var.get(), sex_var.get(), int(contact_var.get()), address_var.get()]
         insert_query = query.insert_patient
 
-        # cursor.execute(insert_query, data)
-        # connection.commit()
+        cursor.execute(insert_query, data)
+        connection.commit()
         reg_level.destroy()
 
     reg_level = Toplevel()
@@ -142,8 +142,8 @@ def appointment():
         data = [int(adhar_var.get()), name_var.get(), doctor_var.get()]
         insert_query = query.insert_app
 
-        # cursor.execute(insert_query)
-        # connection.commit()
+        cursor.execute(insert_query)
+        connection.commit()
         app_level.destroy()
 
     app_level = Toplevel()
@@ -166,10 +166,10 @@ def appointment():
     l_doctor = ttk.Label(app_frame, text = 'doctor').pack() # place(x = 40, y = 100)
     c_doctor = ttk.Combobox(app_frame, textvariable = doctor_var)
     c_doctor['state'] = 'readonly'
-    # cursor.execute('Select name from dcotor;')
-    # doctor_name = []
-    # for tup in cusror.fetchall():
-    #     doctor.append(tup[0])
+    cursor.execute('Select name from dcotor;')
+    doctor_name = []
+    for tup in cusror.fetchall():
+        doctor.append(tup[0])
     doctor_name = ['abc', 'adaf', 'asdf', 'asdfasdf', 'asdfadf']
     c_doctor['values'] = doctor_name
     c_doctor.pack()
@@ -181,8 +181,8 @@ def modify():
         data = [c_field.get(), e_ch_field.get(), int(adhar_var.get())]
         mod_query = query.modify_pa
 
-        # cursor.execute(mod_query, data)
-        # connection.commit()
+        cursor.execute(mod_query, data)
+        connection.commit()
         mod_level.destroy()
 
     mod_level = Toplevel()
@@ -211,7 +211,46 @@ def modify():
     b_confirm = ttk.Button(mod_frame, text = 'Confirm', command = confirm).pack()
 
 def view():
-    pass
+    view_level = Toplevel()
+    view_level.resizable(False, False)
+    view_level.title('Details')
+
+    pati_f = ttk.Frame(view_level)
+    app_f = ttk.Frame(view_level)
+
+    pati_f.grid(row = 0, column = 0)
+    app_f.grid(row = 1, column = 0)
+
+    l_pati = ttk.Label(pati_f, text = 'Patients').pack()
+    l_app = ttk.Label(app_f, text = 'Appointments').pack()
+
+    columns = ('adhar_no', 'name', 'sex', 'contact', 'address')
+    t_pati = ttk.Treeview(pati_f, columns = columns, show = 'headings')
+    t_pati.heading('adhar_no', text = 'Adhar No')
+    t_pati.heading('name', text = 'Name')
+    t_pati.heading('sex', text = 'Sex')
+    t_pati.heading('contact', text = 'Contact')
+    t_pati.heading('address', text = 'Address')
+
+    cursor.execute('Select * from patient;')
+    for entry in cursor.fetchall():
+        t_pati.insert('', END, values = entry)
+
+    t_pati.pack()
+
+    colums = ('adhar_no', 'pname', 'dname', 'date', 'apno')
+    t_app = ttk.Treeview(app_f, columns = colums, show = 'headings')
+    t_app.heading('adhar_no', text = 'Adhar No')
+    t_app.heading('pname', text = 'Patient Name')
+    t_app.heading('dname', text = 'Doctor Name')
+    t_app.heading('date', text = 'Date')
+    t_app.heading('apno', text = 'Appointment No')
+
+    cursor.execute('Select adhar_no, patient_name, doctor_name, DATE(date), appointment_no from appointment;')
+    for entry in cursor.fetchall():
+        t_app.insert('', END, values = entry)
+
+    t_app.pack()
 
 buttons()
 

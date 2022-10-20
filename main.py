@@ -2,12 +2,13 @@ import query
 from tkinter import *
 from tkinter import ttk
 import mysql.connector as sql
+import datetime
 
 connection = sql.connect(
-    user = 'u109154_SvCGUADgcx', 
-    password = '=oE+Xthivc+B^nGH2O82Ckwo',
-    host = '51.161.33.34', 
-    database = 's109154_qew'
+    user = 'root', 
+    password = '',
+    host = 'localhost',
+    database = 'hospital'
 )
 
 if connection.is_connected():
@@ -17,9 +18,9 @@ else:
 
 cursor = connection.cursor(buffered = True)
 
-# for que in query.queries:
-#     cursor.execute(que)
-# connection.commit()
+for que in query.queries:
+    cursor.execute(que)
+connection.commit()
 
 root = Tk()
 root.resizable(False, False)
@@ -139,10 +140,10 @@ def register():
 
 def appointment():
     def confirm():
-        data = [int(adhar_var.get()), name_var.get(), doctor_var.get()]
+        data = [int(adhar_var.get()), name_var.get(), doctor_var.get(), datetime.datetime.now()]
         insert_query = query.insert_app
 
-        cursor.execute(insert_query)
+        cursor.execute(insert_query, data)
         connection.commit()
         app_level.destroy()
 
@@ -166,10 +167,10 @@ def appointment():
     l_doctor = ttk.Label(app_frame, text = 'doctor').pack() # place(x = 40, y = 100)
     c_doctor = ttk.Combobox(app_frame, textvariable = doctor_var)
     c_doctor['state'] = 'readonly'
-    cursor.execute('Select name from dcotor;')
+    cursor.execute('Select name from doctor;')
     doctor_name = []
-    for tup in cusror.fetchall():
-        doctor.append(tup[0])
+    for tup in cursor.fetchall():
+        doctor_name.append(tup[0])
     doctor_name = ['abc', 'adaf', 'asdf', 'asdfasdf', 'asdfadf']
     c_doctor['values'] = doctor_name
     c_doctor.pack()
@@ -178,9 +179,15 @@ def appointment():
 
 def modify():
     def confirm():
-        data = [c_field.get(), e_ch_field.get(), int(adhar_var.get())]
-        mod_query = query.modify_pa
-
+        changed_data = changed_var.get()
+        if field_var.get().lower() in ('adhar_no', 'contact'):
+            change_data = int(changed_var.get())
+        data = [changed_data]
+        mod_query = f"""
+        Update patient
+        set {field_var.get()} = %s
+        where adhar_no = {int(adhar_var.get())}        
+        """
         cursor.execute(mod_query, data)
         connection.commit()
         mod_level.destroy()
@@ -234,6 +241,7 @@ def view():
 
     cursor.execute('Select * from patient;')
     for entry in cursor.fetchall():
+        print(entry)
         t_pati.insert('', END, values = entry)
 
     t_pati.pack()

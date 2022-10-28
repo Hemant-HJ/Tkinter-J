@@ -25,6 +25,12 @@ def write():
             password = password.get(),
             host = host.get()
         )
+        cursor = connection.cursor(buffered = True)
+
+        for que in query.queries:
+            cursor.execute(que)
+            connection.commit()
+        
         changed_data = {
             'username': username.get(),
             'password': password.get(),
@@ -52,13 +58,12 @@ if file_data['started'] == False:
     confirm = ttk.Button(frame, text = 'Confirm', command = write).pack()
     root.mainloop()
 
-else:
-    connection = sql.connect(
-        user = file_data['username'], 
-        password = file_data['password'],
-        host = file_data['host'],
-        database = 'hospital'
-    )
+connection = sql.connect(
+    user = file_data['username'], 
+    password = file_data['password'],
+    host = file_data['host'],
+    database = 'hospital'
+)
 
 if connection.is_connected():
     print('Successfully Connected.')
@@ -66,10 +71,6 @@ else:
     print('Connection Error.')
 
 cursor = connection.cursor(buffered = True)
-
-for que in query.queries:
-    cursor.execute(que)
-connection.commit()
 
 root = Tk()
 root.resizable(False, False)

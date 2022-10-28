@@ -1,6 +1,6 @@
 drop_database = 'Drop database if exists hospital;'
 create_database =  'Create database hospital;'
-use_database = 'Use s109166_ddd;'
+use_database = 'Use hospital;'
 
 doctor_table = """
 Create table if not exists doctor (

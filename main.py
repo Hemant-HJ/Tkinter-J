@@ -3,13 +3,62 @@ from tkinter import *
 from tkinter import ttk
 import mysql.connector as sql
 import datetime
+import json
 
-connection = sql.connect(
-    user = 'root', 
-    password = '',
-    host = 'localhost',
-    database = 'hospital'
-)
+root = Tk()
+
+def load():
+    with open('variable.json', mode = 'r') as file:
+        return json.load(file)
+
+file_data = load()
+
+connection = False
+username = StringVar()
+password = StringVar()
+host = StringVar()
+
+def write():
+    try:
+        connection = sql.connect(
+            user = username.get(),
+            password = password(),
+            host = host.get()
+        )
+        changed_data = {
+            'username': username.get(),
+            'password': password.get(),
+            'host': host.get()
+        }
+        with open('variable.json', mode = 'w') as file:
+            file_data.update(changed_data)
+            json.dump(file_data, file, indent = 4)
+    except sql.Error as e:
+        return
+
+if file_data['started'] == False:
+    frame = ttk.Frame(root)
+    frame.pack()
+
+    l_username = ttk.Label(frame, text = 'Username').pack()
+    e_username = ttk.Entry(frame, textvariable = username).pack()
+
+    l_pass = ttk.Label(frame, text = 'Password').pack()
+    e_pass = ttk.Entry(frame, textvariable = password).pack()
+
+    l_host = ttk.Label(frame, text = 'Host').pack()
+    e_host = ttk.Entry(frame, textvariable = host).pack()
+
+    confirm = ttk.Button(frame, text = 'Confirm', command = write).pack()
+    root.mainloop()
+
+else:
+    connection = sql.connect(
+        user = file_data['username'], 
+        password = file_data['password'],
+        host = file_data['host'],
+        database = 'hospital'
+    )
 
 if connection.is_connected():
     print('Successfully Connected.')

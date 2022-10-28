@@ -40,6 +40,8 @@ def write():
         with open('variable.json', mode = 'w') as file:
             file_data.update(changed_data)
             json.dump(file_data, file, indent = 4)
+
+        root.destroy()
     except sql.Error as e:
         print(e)
 

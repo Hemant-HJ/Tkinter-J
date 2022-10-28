@@ -22,7 +22,7 @@ def write():
     try:
         connection = sql.connect(
             user = username.get(),
-            password = password(),
+            password = password.get(),
             host = host.get()
         )
         changed_data = {

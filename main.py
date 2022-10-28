@@ -34,7 +34,7 @@ def write():
             file_data.update(changed_data)
             json.dump(file_data, file, indent = 4)
     except sql.Error as e:
-        return
+        print(e)
 
 if file_data['started'] == False:
     frame = ttk.Frame(root)

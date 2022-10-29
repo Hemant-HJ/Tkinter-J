@@ -1,8 +1,8 @@
 {
-    "username": "",
-    "password": "",
-    "host": "",
+    "username": "u109154_y7z8REJbW4",
+    "password": "8V=2L^+ZuxFDb9KBYTqDM=By",
+    "host": "51.161.33.34",
     "port": 3306,
     "database": "hospital",
-    "started": false
+    "started": true
 }

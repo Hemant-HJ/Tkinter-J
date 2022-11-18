@@ -1,6 +1,6 @@
 drop_database = 'Drop database if exists hospital;'
 create_database =  'Create database hospital;'
-use_database = 'Use s109154_qew;'
+use_database = 'hospital;'
 
 doctor_table = """
 Create table if not exists doctor (
@@ -29,16 +29,28 @@ Create table if not exists appointment (
 """
 insert_into_doctor = """
 Insert into doctor values
-('asfa','asfasf',12),
-('asfa','asdf',1),
-('wer','azcv',4)
+('Dr.Kumar','Physician',20),
+('Dr.K Sanjeev','Pediatrecian',22),
+('Dr.Sharma','Orthopaedic surgeon',24),
+('Dr.Shikha','Gynaecologist',27),
+('Dr.Khan','Neurologist',26),
+('Dr.Verma','cardiologist',29),
+('Dr.Sia','Opthalmalogist',25),
+('Dr.Karan','Dermatologist',32),
+('Dr.Singh','physician',35)
 """
-queries = [use_database, doctor_table, patient_table, appointment_table, insert_into_doctor]
+queries = [use_database,doctor_table, patient_table, appointment_table, insert_into_doctor]
 
 service = [
-    (1,'adfgadfg',12),
-    (2,'asdfadf',1),
-    (3,'fasdfasdf',123)
+    (1,'X-ray',12),
+    (2,'CT Scan',11),
+    (3,'Blood Collection',13),
+    (4,'MRI',14),
+    (5,'Dialysis',15),
+    (6,'ECG',16),
+    (7,'Chemist',17),
+    (8,'Ultrasound',19),
+    (9,'Lab',10)
 ]
 
 insert_patient = """

@@ -1,6 +1,6 @@
 drop_database = 'Drop database if exists hospital;'
 create_database =  'Create database hospital;'
-use_database = 'hospital;'
+use_database = 'use hospital;'
 
 doctor_table = """
 Create table if not exists doctor (
@@ -39,7 +39,7 @@ Insert into doctor values
 ('Dr.Karan','Dermatologist',32),
 ('Dr.Singh','physician',35)
 """
-queries = [use_database,doctor_table, patient_table, appointment_table, insert_into_doctor]
+queries = [drop_database, create_database, use_database,doctor_table, patient_table, appointment_table, insert_into_doctor]
 
 service = [
     (1,'X-ray',12),

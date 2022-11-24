@@ -2,9 +2,7 @@ import query
 from tkinter import *
 from tkinter import ttk, messagebox
 import mysql.connector as sql
-import datetime
 import json
-
 
 def load():
     with open('variable.json', mode = 'r') as file:
@@ -217,7 +215,7 @@ else:
 
     def appointment():
         def confirm():
-            data = [int(adhar_var.get()), name_var.get(), doctor_var.get(), datetime.datetime.now()]
+            data = [int(adhar_var.get()), name_var.get(), doctor_var.get()]
             insert_query = query.insert_app
 
             cursor.execute(insert_query, data)

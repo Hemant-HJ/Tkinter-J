@@ -60,7 +60,7 @@ values (%s, %s, %s, %s, %s)
 
 insert_app = """
 Insert into appointment (adhar_no, patient_name, doctor_name, date)
-values (%s, %s, %s, %s)
+values (%s, %s, %s, now())
 """
 modify_pa = """
 Update patient
